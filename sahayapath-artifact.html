@@ -1,0 +1,1904 @@
+<title>SahayaPath — AI Scheme Matching for SC Entrepreneurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   SahayaPath — prototype stylesheet
+   Design language: institutional but warm. Deep green = NSFDC /
+   government trust, saffron accent for action, generous type for
+   low-literacy users.
+   ============================================================ */
+
+:root {
+  --bg:            #F6F4EF;
+  --surface:       #FFFFFF;
+  --surface-alt:   #EFEBE2;
+  --surface-inset: #E5E0D5;
+
+  --text:          #17140F;
+  --text-2:        #4E4941;
+  --text-3:        #837C71;
+  --border:        #DCD6C9;
+  --border-strong: #C4BCAA;
+
+  --green:         #1B6B4A;
+  --green-dark:    #105136;
+  --green-soft:    #E4F2EA;
+  --saffron:       #C2611A;
+  --saffron-soft:  #FCEEDF;
+  --blue:          #24549F;
+  --blue-soft:     #E5EDFA;
+  --purple:        #6B21A8;
+  --purple-soft:   #F2E7FC;
+  --red:           #A32424;
+  --red-soft:      #FBE6E6;
+  --amber:         #96700D;
+  --amber-soft:    #FBF1D8;
+
+  --shadow-sm: 0 1px 2px rgba(23,20,15,.06), 0 1px 3px rgba(23,20,15,.05);
+  --shadow-md: 0 4px 14px rgba(23,20,15,.08);
+  --shadow-lg: 0 12px 34px rgba(23,20,15,.13);
+
+  --r-sm: 8px; --r-md: 12px; --r-lg: 18px;
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15.5px;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: none; }
+a { color: var(--green); }
+
+/* ---------------- Layout shell ---------------- */
+
+.shell { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 60;
+  background: rgba(246,244,239,.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.topbar-inner {
+  max-width: 1140px; margin: 0 auto; padding: 12px 20px;
+  display: flex; align-items: center; gap: 18px;
+}
+.brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.brand-mark {
+  width: 34px; height: 34px; border-radius: 9px;
+  background: linear-gradient(140deg, var(--green), var(--green-dark));
+  color: #fff; display: grid; place-items: center;
+  font-weight: 700; font-size: 16px; letter-spacing: -.5px;
+  box-shadow: var(--shadow-sm);
+}
+.brand-name { font-weight: 700; font-size: 17px; letter-spacing: -.02em; }
+.brand-sub { font-size: 10.5px; color: var(--text-3); font-family: var(--mono); letter-spacing: .06em; text-transform: uppercase; margin-top: -2px; }
+
+.nav { display: flex; gap: 2px; margin-left: auto; flex-wrap: wrap; }
+.nav button {
+  padding: 7px 13px; border-radius: 7px; font-size: 13.5px;
+  font-weight: 500; color: var(--text-2); transition: .15s;
+}
+.nav button:hover { background: var(--surface-alt); color: var(--text); }
+.nav button.on { background: var(--green); color: #fff; }
+
+.lang-toggle { display: flex; border: 1px solid var(--border-strong); border-radius: 7px; overflow: hidden; }
+.lang-toggle button { padding: 6px 10px; font-size: 12px; font-weight: 600; color: var(--text-3); }
+.lang-toggle button.on { background: var(--text); color: var(--bg); }
+
+/* ---------------- Views ---------------- */
+
+.view { display: none; padding: 34px 0 90px; }
+.view.on { display: block; animation: rise .32s ease both; }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+.eyebrow {
+  font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--green);
+  margin-bottom: 8px;
+}
+h1 { font-size: clamp(28px, 4.4vw, 42px); line-height: 1.12; letter-spacing: -.025em; font-weight: 700; text-wrap: balance; }
+h2 { font-size: clamp(21px, 3vw, 27px); line-height: 1.2; letter-spacing: -.02em; font-weight: 700; text-wrap: balance; }
+h3 { font-size: 17px; font-weight: 650; letter-spacing: -.01em; }
+.lede { font-size: 17px; color: var(--text-2); max-width: 640px; margin-top: 12px; }
+.muted { color: var(--text-3); font-size: 13.5px; }
+
+/* ---------------- Home ---------------- */
+
+.hero { padding: 46px 0 40px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--green-soft); color: var(--green-dark);
+  border: 1px solid rgba(27,107,74,.25);
+  padding: 5px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 600; margin-bottom: 18px;
+}
+.hero-cta { display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 20px; border-radius: 10px; font-weight: 600; font-size: 15px;
+  transition: .16s; border: 1px solid transparent;
+}
+.btn-primary { background: var(--green); color: #fff; box-shadow: var(--shadow-sm); }
+.btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-ghost { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
+.btn-ghost:hover { border-color: var(--text-3); }
+.btn-voice { background: var(--saffron); color: #fff; }
+.btn-voice:hover { background: #A44F12; }
+.btn-sm { padding: 7px 13px; font-size: 13px; border-radius: 8px; }
+
+.stat-strip {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+  border-radius: var(--r-md); overflow: hidden; margin: 34px 0;
+}
+.stat { background: var(--surface); padding: 18px 20px; }
+.stat-num { font-size: 25px; font-weight: 700; letter-spacing: -.03em; color: var(--green); font-variant-numeric: tabular-nums; }
+.stat-lbl { font-size: 12.5px; color: var(--text-3); line-height: 1.4; margin-top: 3px; }
+
+.mod-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
+.mod {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 24px; transition: .18s; cursor: pointer;
+}
+.mod:hover { border-color: var(--green); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.mod-ico { width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center; font-size: 20px; margin-bottom: 14px; }
+.mod h3 { margin-bottom: 6px; }
+.mod p { font-size: 14px; color: var(--text-2); }
+.mod-tag {
+  display: inline-block; margin-top: 12px; font-family: var(--mono);
+  font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text-3); border: 1px solid var(--border); padding: 3px 8px; border-radius: 5px;
+}
+
+.flow-strip {
+  display: flex; align-items: stretch; gap: 0; margin: 22px 0;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-md); overflow-x: auto;
+}
+.flow-node { padding: 16px 20px; flex: 1; min-width: 180px; border-right: 1px solid var(--border); }
+.flow-node:last-child { border-right: none; }
+.flow-node .t { font-weight: 650; font-size: 14px; }
+.flow-node .s { font-size: 12.5px; color: var(--text-3); margin-top: 3px; }
+.flow-node .r { font-family: var(--mono); font-size: 11px; color: var(--green); margin-top: 7px; }
+
+/* ---------------- Chat wizard ---------------- */
+
+.chat-wrap { max-width: 720px; margin: 0 auto; }
+.chat-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); box-shadow: var(--shadow-md); overflow: hidden;
+}
+.chat-head {
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px; background: var(--surface-alt);
+}
+.chat-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; font-size: 14px; }
+.chat-status { font-size: 12px; color: var(--text-3); }
+.dot-live { width: 7px; height: 7px; border-radius: 50%; background: #22A06B; display: inline-block; margin-right: 5px; animation: pulse 1.8s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+.chat-body { padding: 22px 20px; min-height: 340px; max-height: 52vh; overflow-y: auto; }
+.msg { display: flex; gap: 10px; margin-bottom: 16px; animation: rise .3s ease both; }
+.msg-bot .bubble {
+  background: var(--surface-alt); border-radius: 4px 14px 14px 14px;
+  padding: 12px 16px; max-width: 88%;
+}
+.msg-user { justify-content: flex-end; }
+.msg-user .bubble {
+  background: var(--green); color: #fff;
+  border-radius: 14px 4px 14px 14px; padding: 10px 16px; max-width: 80%; font-weight: 500;
+}
+.bubble .q { font-size: 16px; font-weight: 600; }
+.bubble .hint { font-size: 13px; color: var(--text-3); margin-top: 4px; }
+
+.chat-foot { border-top: 1px solid var(--border); padding: 16px 20px; background: var(--surface); }
+.opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; }
+.opt {
+  border: 1.5px solid var(--border-strong); border-radius: 10px;
+  padding: 12px 14px; text-align: left; font-size: 14.5px; font-weight: 500;
+  background: var(--surface); transition: .14s; display: flex; align-items: center; gap: 9px;
+}
+.opt:hover { border-color: var(--green); background: var(--green-soft); }
+.opt .ico { font-size: 17px; }
+.opt .sub { display: block; font-size: 12px; color: var(--text-3); font-weight: 400; }
+
+.slider-row { display: flex; align-items: center; gap: 14px; }
+.slider-val { font-family: var(--mono); font-size: 20px; font-weight: 600; color: var(--green); min-width: 110px; font-variant-numeric: tabular-nums; }
+input[type=range] { flex: 1; accent-color: var(--green); height: 6px; }
+
+.progress-track { height: 3px; background: var(--surface-inset); }
+.progress-fill { height: 100%; background: var(--green); transition: width .35s ease; }
+
+.voice-demo {
+  margin-top: 18px; background: var(--saffron-soft);
+  border: 1px solid rgba(194,97,26,.28); border-radius: var(--r-md); padding: 16px 18px;
+}
+.voice-demo .lbl { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--saffron); font-weight: 600; }
+.voice-demo .said { font-size: 15px; margin-top: 6px; font-weight: 500; }
+
+/* ---------------- Result cards ---------------- */
+
+.result-grid { display: grid; gap: 14px; margin-top: 20px; }
+.rcard {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden; transition: .18s;
+}
+.rcard.top { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+.rcard-head { padding: 20px 22px 16px; display: flex; gap: 16px; align-items: flex-start; }
+.rank {
+  width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center;
+  font-weight: 700; font-size: 15px; background: var(--surface-inset); color: var(--text-2); flex-shrink: 0;
+}
+.rcard.top .rank { background: var(--green); color: #fff; }
+.rcard h3 { font-size: 18px; }
+.rcard .tagline { font-size: 13.5px; color: var(--text-3); margin-top: 2px; }
+
+.score-ring { margin-left: auto; text-align: center; flex-shrink: 0; }
+.score-num { font-size: 26px; font-weight: 700; letter-spacing: -.03em; color: var(--green); font-variant-numeric: tabular-nums; }
+.score-lbl { font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); }
+
+.terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 1px; background: var(--border); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.term { background: var(--surface-alt); padding: 11px 14px; }
+.term .k { font-family: var(--mono); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+.term .v { font-weight: 650; font-size: 14.5px; margin-top: 2px; font-variant-numeric: tabular-nums; }
+
+.why { padding: 16px 22px; }
+.why-title { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 9px; }
+.why ul { list-style: none; display: grid; gap: 6px; }
+.why li { font-size: 14px; color: var(--text-2); padding-left: 22px; position: relative; }
+.why li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+.why li.neg::before { content: '!'; color: var(--amber); }
+
+.rcard-foot { padding: 14px 22px; background: var(--surface-alt); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-top: 1px solid var(--border); }
+.src { font-size: 11.5px; color: var(--text-3); font-family: var(--mono); margin-right: auto; }
+
+.warn-bar {
+  display: flex; gap: 10px; padding: 12px 16px; border-radius: var(--r-sm);
+  background: var(--amber-soft); border: 1px solid rgba(150,112,13,.28);
+  font-size: 13.5px; color: #6E5209; margin: 14px 22px 0;
+}
+.warn-bar.bad { background: var(--red-soft); border-color: rgba(163,36,36,.28); color: #7E1C1C; }
+
+.rejected {
+  margin-top: 26px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-md); padding: 18px 22px;
+}
+.rej-row { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px dashed var(--border); font-size: 13.5px; }
+.rej-row:last-child { border-bottom: none; }
+.rej-name { font-weight: 600; min-width: 210px; color: var(--text-2); }
+.rej-why { color: var(--text-3); }
+
+/* ---------------- Calculator ---------------- */
+
+.calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+@media (max-width: 860px) { .calc-grid { grid-template-columns: 1fr; } }
+
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 22px; }
+.panel h3 { margin-bottom: 14px; }
+
+.field { margin-bottom: 18px; }
+.field label { display: block; font-size: 13px; font-weight: 600; color: var(--text-2); margin-bottom: 7px; }
+.field select, .field input[type=number] {
+  width: 100%; padding: 10px 12px; border: 1.5px solid var(--border-strong);
+  border-radius: var(--r-sm); background: var(--surface);
+}
+.field select:focus, .field input:focus { outline: none; border-color: var(--green); }
+
+.emi-hero { text-align: center; padding: 22px 0 18px; border-bottom: 1px solid var(--border); }
+.emi-hero .k { font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
+.emi-hero .v { font-size: 44px; font-weight: 700; letter-spacing: -.035em; color: var(--green); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.emi-hero .s { font-size: 13.5px; color: var(--text-3); }
+
+.breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); margin-top: 18px; border: 1px solid var(--border); border-radius: var(--r-sm); overflow: hidden; }
+.bd { background: var(--surface); padding: 13px 15px; }
+.bd .k { font-size: 11.5px; color: var(--text-3); }
+.bd .v { font-weight: 650; font-size: 16px; font-variant-numeric: tabular-nums; margin-top: 2px; }
+
+.chart-wrap { margin-top: 18px; }
+.chart-legend { display: flex; gap: 16px; font-size: 12px; color: var(--text-2); margin-top: 8px; flex-wrap: wrap; }
+.chart-legend span { display: flex; align-items: center; gap: 6px; }
+.swatch { width: 11px; height: 11px; border-radius: 3px; }
+
+.cmp-table { width: 100%; border-collapse: collapse; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.cmp-table th { font-family: var(--mono); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--border); }
+.cmp-table td { padding: 10px; border-bottom: 1px solid var(--border); }
+.cmp-table tr:last-child td { border-bottom: none; }
+.cmp-table .best { background: var(--green-soft); }
+.cmp-table .best td:first-child { font-weight: 650; }
+
+/* ---------------- Map ---------------- */
+
+.map-layout { display: grid; grid-template-columns: 1.25fr 1fr; gap: 18px; align-items: start; }
+@media (max-width: 900px) { .map-layout { grid-template-columns: 1fr; } }
+
+.map-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
+.map-toolbar { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; background: var(--surface-alt); }
+.map-toolbar select { padding: 7px 10px; border: 1px solid var(--border-strong); border-radius: 7px; background: var(--surface); font-size: 13px; }
+.map-canvas { background: #EAF0EC; position: relative; }
+.map-canvas svg { display: block; width: 100%; height: auto; }
+.india-fill { fill: #D8E4DA; stroke: #A9BFAF; stroke-width: 1.2; }
+.pin { cursor: pointer; transition: .15s; }
+.pin:hover circle.body { r: 9; }
+.pin circle.halo { opacity: .22; }
+.pin.sel circle.body { stroke: #17140F; stroke-width: 2.5; }
+.pin.dim { opacity: .18; pointer-events: none; }
+.user-dot { fill: var(--blue); }
+
+.legend { padding: 12px 18px; border-top: 1px solid var(--border); display: flex; gap: 18px; flex-wrap: wrap; font-size: 12px; color: var(--text-2); }
+.legend span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+
+.plist { display: grid; gap: 10px; max-height: 560px; overflow-y: auto; padding-right: 4px; }
+.pcard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 15px 17px; cursor: pointer; transition: .15s; }
+.pcard:hover { border-color: var(--green); box-shadow: var(--shadow-sm); }
+.pcard.sel { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+.pcard-top { display: flex; align-items: flex-start; gap: 10px; }
+.pcard h4 { font-size: 14.5px; font-weight: 650; line-height: 1.3; }
+.ptype { font-family: var(--mono); font-size: 9.5px; letter-spacing: .07em; padding: 2px 6px; border-radius: 4px; flex-shrink: 0; font-weight: 600; }
+.ptype.SCA  { background: var(--green-soft); color: var(--green-dark); }
+.ptype.PSB  { background: var(--blue-soft); color: var(--blue); }
+.ptype.RRB  { background: var(--purple-soft); color: var(--purple); }
+.ptype.NBFC { background: var(--saffron-soft); color: var(--saffron); }
+.pmeta { font-size: 12.5px; color: var(--text-3); margin-top: 4px; }
+.health-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; padding: 3px 8px; border-radius: 999px; margin-top: 8px; }
+.health-good { background: var(--green-soft); color: var(--green-dark); }
+.health-warn { background: var(--amber-soft); color: var(--amber); }
+.health-crit { background: var(--red-soft); color: var(--red); }
+.util-bar { height: 5px; background: var(--surface-inset); border-radius: 3px; margin-top: 9px; overflow: hidden; }
+.util-fill { height: 100%; border-radius: 3px; }
+
+/* ---------------- Docs / tracker / stories ---------------- */
+
+.doc-list { display: grid; gap: 8px; margin-top: 14px; }
+.doc-item {
+  display: flex; align-items: center; gap: 12px; padding: 13px 16px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-sm);
+  cursor: pointer; transition: .14s;
+}
+.doc-item:hover { border-color: var(--border-strong); }
+.doc-item.done { background: var(--green-soft); border-color: rgba(27,107,74,.3); }
+.doc-check { width: 21px; height: 21px; border: 2px solid var(--border-strong); border-radius: 6px; display: grid; place-items: center; flex-shrink: 0; font-size: 13px; color: transparent; }
+.doc-item.done .doc-check { background: var(--green); border-color: var(--green); color: #fff; }
+.doc-item.done .doc-name { text-decoration: line-through; color: var(--text-3); }
+.doc-name { font-size: 14.5px; font-weight: 500; }
+
+.track { position: relative; padding-left: 34px; margin-top: 20px; }
+.track::before { content: ''; position: absolute; left: 10px; top: 8px; bottom: 22px; width: 2px; background: var(--border); }
+.tstep { position: relative; padding-bottom: 24px; }
+.tstep::before {
+  content: ''; position: absolute; left: -30px; top: 4px; width: 18px; height: 18px;
+  border-radius: 50%; background: var(--surface); border: 2px solid var(--border-strong);
+}
+.tstep.done::before { background: var(--green); border-color: var(--green); }
+.tstep.active::before { background: var(--saffron); border-color: var(--saffron); box-shadow: 0 0 0 5px var(--saffron-soft); }
+.tstep .lbl { font-weight: 650; font-size: 15px; }
+.tstep .day { font-family: var(--mono); font-size: 11.5px; color: var(--text-3); }
+.tstep.done .lbl { color: var(--text-2); }
+
+.story-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; margin-top: 18px; }
+.story { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 22px; }
+.story .quote { font-size: 16.5px; line-height: 1.45; font-weight: 500; letter-spacing: -.01em; }
+.story .who { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.story .nm { font-weight: 650; font-size: 14px; }
+.story .pl { font-size: 12.5px; color: var(--text-3); }
+.story .dt { font-size: 13px; color: var(--text-2); margin-top: 9px; }
+.story-chip { display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: .07em; background: var(--green-soft); color: var(--green-dark); padding: 3px 8px; border-radius: 5px; margin-bottom: 12px; font-weight: 600; }
+
+/* ---------------- Misc ---------------- */
+
+.section { margin-top: 44px; }
+.section-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; flex-wrap: wrap; }
+
+.note {
+  background: var(--blue-soft); border: 1px solid rgba(36,84,159,.25);
+  border-radius: var(--r-md); padding: 14px 18px; font-size: 13.5px; color: #1C4482;
+  margin-top: 16px;
+}
+.note strong { color: #12305E; }
+
+.demo-tag {
+  position: fixed; right: 16px; bottom: 16px; z-index: 80;
+  background: var(--text); color: var(--bg); font-size: 11.5px;
+  padding: 8px 14px; border-radius: 999px; font-family: var(--mono);
+  letter-spacing: .05em; box-shadow: var(--shadow-lg); opacity: .9;
+}
+
+.empty { text-align: center; padding: 60px 20px; color: var(--text-3); }
+
+/* ---------------- Mobile ---------------- */
+
+@media (max-width: 720px) {
+  body { font-size: 15px; }
+  .topbar-inner { gap: 10px; padding: 10px 14px; flex-wrap: wrap; }
+  .brand-sub { display: none; }
+  .nav {
+    order: 3; width: 100%; margin-left: 0;
+    flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav button { white-space: nowrap; flex-shrink: 0; padding: 6px 11px; font-size: 13px; }
+  .lang-toggle { margin-left: auto; }
+  .shell { padding: 0 14px; }
+  .hero { padding: 30px 0 26px; }
+  .view { padding: 24px 0 70px; }
+  .stat-strip { grid-template-columns: 1fr 1fr; }
+  .rcard-head { flex-wrap: wrap; }
+  .score-ring { margin-left: 0; }
+  .terms { grid-template-columns: 1fr 1fr; }
+  .rej-row { flex-direction: column; gap: 2px; }
+  .rej-name { min-width: 0; }
+  .breakdown { grid-template-columns: 1fr; }
+  .demo-tag { right: 10px; bottom: 10px; font-size: 10.5px; padding: 6px 11px; }
+  .plist { max-height: none; }
+  .chat-body { max-height: none; min-height: 260px; }
+  .opts { grid-template-columns: 1fr; }
+}
+
+.pill-row { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 10px; }
+.pill { font-family: var(--mono); font-size: 10.5px; letter-spacing: .05em; padding: 4px 9px; border-radius: 5px; background: var(--surface-inset); color: var(--text-2); }
+
+</style>
+
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand" onclick="go('home')">
+      <div class="brand-mark">स</div>
+      <div>
+        <div class="brand-name">SahayaPath</div>
+        <div class="brand-sub">SIH26092 · MoSJE</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <button data-view="home">Home</button>
+      <button data-view="chat">Find my scheme</button>
+      <button data-view="calculator">Calculator</button>
+      <button data-view="locator">Partner map</button>
+      <button data-view="docs">Documents</button>
+      <button data-view="tracker">Track</button>
+      <button data-view="stories">Stories</button>
+    </nav>
+    <div class="lang-toggle">
+      <button class="on">EN</button>
+      <button onclick="alert('The real build ships Hindi, Tamil, Bengali and Marathi via i18next, plus Whisper speech-to-text and Indic TTS for voice-first use.')">हि</button>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════ HOME ══════════════════ -->
+<section class="view" id="view-home">
+  <div class="shell">
+    <div class="hero">
+      <div class="hero-badge">● Problem Statement SIH26092 · Ministry of Social Justice &amp; Empowerment</div>
+      <h1>The scheme is right there.<br>Nobody tells you it is yours.</h1>
+      <p class="lede">
+        NSFDC lends ₹775 crore a year to SC entrepreneurs at 4–6% — but 61% of beneficiaries hear about it
+        from a relative, not the government. SahayaPath asks six questions and tells you which scheme fits,
+        what you will pay every month, and exactly which channel partner to walk into.
+      </p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="startChat(false)">Find my scheme →</button>
+        <button class="btn btn-voice" onclick="startChat(true)">🎙 Try the Hindi voice demo</button>
+      </div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat"><div class="stat-num">61%</div><div class="stat-lbl">learn about schemes from friends, not official channels</div></div>
+      <div class="stat"><div class="stat-num">93%</div><div class="stat-lbl">struggle with collateral requirements</div></div>
+      <div class="stat"><div class="stat-num">77%</div><div class="stat-lbl">face repeated office visits</div></div>
+      <div class="stat"><div class="stat-num">4 mo</div><div class="stat-lbl">average application to disbursement</div></div>
+      <div class="stat"><div class="stat-num">100+</div><div class="stat-lbl">channel partners you must route through</div></div>
+    </div>
+    <p class="muted">Source: MoSJE Evaluation Study of NSFDC · NSFDC annual disbursement figures FY 2025-26</p>
+
+    <div class="section">
+      <div class="eyebrow">The three modules the PS asks for</div>
+      <h2>What SahayaPath does</h2>
+      <div class="mod-grid">
+        <div class="mod" onclick="startChat(false)">
+          <div class="mod-ico" style="background:var(--green-soft)">🧭</div>
+          <h3>Smart Scheme Recommender</h3>
+          <p>Six plain-language questions — in text or voice — and a rule engine plus RAG pipeline ranks all 11 NSFDC schemes with a match score and an explanation you can actually read.</p>
+          <span class="mod-tag">Rule engine + RAG + LLM</span>
+        </div>
+        <div class="mod" onclick="openCalc('LVY', 450000)">
+          <div class="mod-ico" style="background:var(--saffron-soft)">₹</div>
+          <h3>Scheme-Aware Calculator</h3>
+          <p>Not a generic EMI tool. It pre-loads the matched scheme's ceiling, rate and moratorium, capitalises moratorium interest, and warns when the EMI crosses 30% of your income.</p>
+          <span class="mod-tag">Moratorium-aware amortisation</span>
+        </div>
+        <div class="mod" onclick="openLocator('ALL')">
+          <div class="mod-ico" style="background:var(--blue-soft)">📍</div>
+          <h3>Partner Locator &amp; Router</h3>
+          <p>Shows only the partners authorised for your scheme, colour-coded by fund utilisation and NPA — so your application never gets routed to a partner that cannot process it.</p>
+          <span class="mod-tag">Geo-filter + health routing</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="eyebrow">Why the locator matters</div>
+      <h2>Money never moves directly</h2>
+      <p class="lede" style="font-size:15.5px">
+        NSFDC does not lend to citizens. It lends to channel partners, who on-lend. Picking the wrong
+        partner is the single most common reason an application dies.
+      </p>
+      <div class="flow-strip">
+        <div class="flow-node">
+          <div class="t">NSFDC</div>
+          <div class="s">Section 8 company under MoSJE</div>
+          <div class="r">lends at 1.5–4%</div>
+        </div>
+        <div class="flow-node">
+          <div class="t">Channel Partners</div>
+          <div class="s">SCAs · PSBs · RRBs · NBFC-MFIs</div>
+          <div class="r">on-lend at 4–15%</div>
+        </div>
+        <div class="flow-node">
+          <div class="t">Beneficiary</div>
+          <div class="s">SC entrepreneurs &amp; students</div>
+          <div class="r">repays the partner</div>
+        </div>
+      </div>
+      <div class="note">
+        <strong>From the problem statement:</strong> “Direct loan applications are not entertained. Instead,
+        funds are routed through a Channel Finance System comprising over 100 Channel Partners” — and
+        applications must not be sent to partners with high NPAs or overdues.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="eyebrow">Beyond the brief</div>
+      <h2>Four things that close the loop</h2>
+      <div class="mod-grid">
+        <div class="mod" onclick="alert('Whisper small handles Hindi/Tamil/Bengali speech-to-text on CPU; responses go back out through Indic TTS. Try the voice demo on the home page to see the flow.')">
+          <div class="mod-ico" style="background:var(--purple-soft)">🎙</div>
+          <h3>Voice-first interface</h3>
+          <p>75% of the target users are rural with low digital literacy. Speaking to the app in Hindi is not a feature — it is the access route.</p>
+        </div>
+        <div class="mod" onclick="openDocs('LVY')">
+          <div class="mod-ico" style="background:var(--green-soft)">📋</div>
+          <h3>Document checklist</h3>
+          <p>The exact papers your matched scheme needs, ticked off before you travel. Directly attacks the 77% repeated-visit statistic.</p>
+        </div>
+        <div class="mod" onclick="go('tracker')">
+          <div class="mod-ico" style="background:var(--blue-soft)">📊</div>
+          <h3>Application tracker</h3>
+          <p>Submitted → verification → PCC → sanctioned → disbursed. Visible status is what transparency actually means here.</p>
+        </div>
+        <div class="mod" onclick="go('stories')">
+          <div class="mod-ico" style="background:var(--saffron-soft)">✨</div>
+          <h3>Success stories</h3>
+          <p>Real repayment numbers from people in the same district. Financial literacy delivered through the channel people already trust.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="eyebrow">Positioning</div>
+      <h2>One line for the judges</h2>
+      <div class="panel" style="border-color:var(--green);background:var(--green-soft)">
+        <p style="font-size:19px;font-weight:600;letter-spacing:-.015em;line-height:1.45;color:var(--green-dark)">
+          “myScheme tells you which schemes exist. SahayaPath tells you which scheme is right for you,
+          how much you will pay per month, and exactly where to go apply — in your own language.”
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CHAT ══════════════════ -->
+<section class="view" id="view-chat">
+  <div class="shell">
+    <div class="chat-wrap">
+      <div class="eyebrow">Module 01 · Smart Scheme Recommender</div>
+      <h2>Let us find your scheme</h2>
+      <p class="muted" style="margin:8px 0 20px">Six questions. No jargon. No login.</p>
+
+      <div id="voice-demo" class="voice-demo" style="display:none">
+        <div class="lbl">🎙 Whisper STT · Hindi · 1.2s</div>
+        <div class="said">“मुझे अपना दूध का बिज़नेस शुरू करना है, 2 लाख चाहिए”</div>
+        <div class="muted" style="margin-top:4px">Transcribed and parsed into purpose = business, cost = ₹2,00,000</div>
+      </div>
+
+      <div class="chat-box" style="margin-top:16px">
+        <div class="chat-head">
+          <div class="chat-avatar">स</div>
+          <div>
+            <div style="font-weight:650;font-size:14px">SahayaPath Assistant</div>
+            <div class="chat-status"><i class="dot-live"></i>Rule engine + RAG online</div>
+          </div>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress" style="width:0"></div></div>
+        <div class="chat-body" id="chat-body"></div>
+        <div class="chat-foot" id="chat-foot"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ RESULTS ══════════════════ -->
+<section class="view" id="view-results">
+  <div class="shell">
+    <div class="eyebrow">Ranked by the eligibility engine</div>
+    <h2>Your best-matched schemes</h2>
+    <p class="muted" style="margin:8px 0 4px">Every card shows the source circular it was derived from.</p>
+    <div id="results-body"></div>
+  </div>
+</section>
+
+<!-- ══════════════════ CALCULATOR ══════════════════ -->
+<section class="view" id="view-calculator">
+  <div class="shell">
+    <div class="eyebrow">Module 02 · Scheme-Aware Financial Calculator</div>
+    <h2>What you will actually pay</h2>
+    <p class="muted" style="margin:8px 0 20px">Scheme limits, rates and moratorium load automatically. Override any of them to explore.</p>
+
+    <div class="calc-grid">
+      <div class="panel">
+        <h3>Loan parameters</h3>
+        <div class="field">
+          <label>Scheme</label>
+          <select id="calc-scheme"></select>
+          <div id="calc-caps" style="margin-top:10px"></div>
+        </div>
+        <div class="field">
+          <label>Loan amount (₹)</label>
+          <input type="number" id="calc-amount" step="10000">
+        </div>
+        <div class="field">
+          <label>Interest rate (% per annum)</label>
+          <input type="number" id="calc-rate" step="0.5">
+        </div>
+        <div class="field">
+          <label>Repayment tenure (months)</label>
+          <input type="number" id="calc-tenure" step="6">
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Moratorium (months)</label>
+          <input type="number" id="calc-mor" step="1">
+          <div class="muted" style="margin-top:6px">No EMI during the moratorium, but interest accrues and is added to the principal.</div>
+        </div>
+      </div>
+
+      <div class="panel" id="calc-out"></div>
+    </div>
+
+    <div class="panel" id="calc-compare" style="margin-top:18px"></div>
+  </div>
+</section>
+
+<!-- ══════════════════ LOCATOR ══════════════════ -->
+<section class="view" id="view-locator">
+  <div class="shell">
+    <div class="eyebrow">Module 03 · Geo-Spatial Partner Locator &amp; Router</div>
+    <h2>Where to actually apply</h2>
+    <p class="muted" style="margin:8px 0 20px">Filtered to partners authorised for your scheme, ranked by distance, colour-coded by health.</p>
+
+    <div class="map-layout">
+      <div class="map-panel">
+        <div class="map-toolbar">
+          <select id="map-scheme"></select>
+          <select id="map-state"></select>
+          <span class="muted" id="map-count" style="margin-left:auto"></span>
+        </div>
+        <div class="map-canvas" id="map-canvas"></div>
+        <div class="legend">
+          <span><i class="dot" style="background:#1B6B4A"></i>Active &amp; performing</span>
+          <span><i class="dot" style="background:#C2941A"></i>High NPA — delays likely</span>
+          <span><i class="dot" style="background:#A32424"></i>Over-utilised — not accepting</span>
+          <span class="muted">Faded pins do not process the selected scheme</span>
+        </div>
+      </div>
+
+      <div>
+        <div id="plist" class="plist"></div>
+        <div class="note">
+          NPA and fund-utilisation figures are <strong>simulated</strong> for this prototype — that data is
+          not public. The system is designed to read it from an NSFDC feed or an SCA admin dashboard, which
+          is what makes “do not route to partners with high overdues” enforceable rather than aspirational.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ DOCS ══════════════════ -->
+<section class="view" id="view-docs">
+  <div class="shell">
+    <div class="eyebrow">Differentiator · Document readiness</div>
+    <h2>Everything you need, before you travel</h2>
+    <div class="field" style="max-width:420px;margin-top:16px">
+      <label>Scheme</label>
+      <select id="doc-scheme" onchange="state.selected=this.value;renderDocs()"></select>
+    </div>
+    <div id="doc-body"></div>
+  </div>
+</section>
+
+<!-- ══════════════════ TRACKER ══════════════════ -->
+<section class="view" id="view-tracker">
+  <div class="shell">
+    <div class="eyebrow">Differentiator · Application tracker</div>
+    <h2>Where your file actually is</h2>
+    <div id="track-body" style="margin-top:16px"></div>
+  </div>
+</section>
+
+<!-- ══════════════════ STORIES ══════════════════ -->
+<section class="view" id="view-stories">
+  <div class="shell">
+    <div class="eyebrow">Differentiator · Financial literacy</div>
+    <h2>People who did this already</h2>
+    <div id="stories-body"></div>
+  </div>
+</section>
+
+<footer class="shell" style="border-top:1px solid var(--border);padding:26px 20px 60px;margin-top:20px">
+  <p class="muted" style="max-width:760px">
+    <strong style="color:var(--text-2)">Student prototype.</strong> Built for Smart India Hackathon problem
+    statement SIH26092. Not affiliated with, endorsed by, or operated by NSFDC or the Ministry of Social
+    Justice &amp; Empowerment. Scheme parameters are indicative summaries of public NSFDC circulars and must
+    be verified against the official source before anyone acts on them. Channel-partner NPA and
+    fund-utilisation figures are <strong style="color:var(--text-2)">simulated</strong> — that data is not public.
+  </p>
+</footer>
+
+<div class="demo-tag">PROTOTYPE · simulated data</div>
+
+<script>
+/* ============================================================
+   SahayaPath — Demo data layer
+   Source: NSFDC scheme circulars (as summarised in the SIH26092
+   build guide). Rates/limits are indicative; replace with the
+   scraped circular data when the real RAG corpus is ready.
+   ============================================================ */
+
+const SCHEMES = [
+  {
+    id: 'LVY', name: 'Laghu Vyavsay Yojana', short: 'LVY',
+    tagline: 'Small business term loan for SC entrepreneurs',
+    maxLoan: 500000, coverage: 0.90, rate: 6.0, rateLabel: '6%',
+    moratorium: 6, tenure: 60, incomeCap: 300000,
+    purposes: ['business'], gender: 'any',
+    partnerTypes: ['SCA', 'RRB'],
+    target: 'Small business / trading / service units',
+    why: 'Standard NSFDC term loan — widest purpose coverage and a low 6% rate.',
+    source: 'NSFDC Circular — Laghu Vyavsay Yojana guidelines',
+    docs: ['SC Caste Certificate', 'Family Income Certificate (under Rs 3L)', 'Project Proposal / Business Plan', 'Aadhaar Card', 'Bank Passbook (last 6 months)', 'Two passport photographs']
+  },
+  {
+    id: 'MSY', name: 'Mahila Samriddhi Yojana', short: 'MSY',
+    tagline: 'Micro-credit built for SC women entrepreneurs',
+    maxLoan: 140000, coverage: 0.90, rate: 4.0, rateLabel: '4%',
+    moratorium: 3, tenure: 48, incomeCap: 300000,
+    purposes: ['business', 'livelihood'], gender: 'female',
+    partnerTypes: ['SCA'],
+    target: 'SC women starting micro-enterprises',
+    why: 'Cheapest money available to SC women — 4% through the State Channelizing Agency.',
+    source: 'NSFDC Circular — Mahila Samriddhi Yojana',
+    docs: ['SC Caste Certificate', 'Family Income Certificate (under Rs 3L)', 'Aadhaar Card', 'Self-declaration of activity', 'Bank Passbook', 'SHG membership proof (if applicable)']
+  },
+  {
+    id: 'AMY', name: 'Aajeevika Micro Finance Yojana', short: 'AMY',
+    tagline: 'Fast micro-finance through NBFC-MFI partners',
+    maxLoan: 140000, coverage: 0.90, rate: 12.5, rateLabel: '12–13%',
+    moratorium: 0, tenure: 36, incomeCap: 300000,
+    purposes: ['livelihood', 'business'], gender: 'any',
+    partnerTypes: ['NBFC'],
+    target: 'Livelihood activities via microfinance institutions',
+    why: 'Last-mile reach where no SCA is active — but the costliest route. Use only if nothing cheaper qualifies.',
+    source: 'NSFDC Circular — Aajeevika Micro Finance Yojana',
+    docs: ['SC Caste Certificate', 'Aadhaar Card', 'Income declaration', 'MFI group / JLG membership', 'Bank Passbook']
+  },
+  {
+    id: 'MAY', name: 'Mahila Adhikarita Yojana', short: 'MAY',
+    tagline: 'Empowerment loan for Safai Karamchari women',
+    maxLoan: 500000, coverage: 0.90, rate: 5.5, rateLabel: '5.5%',
+    moratorium: 0, tenure: 60, incomeCap: 300000,
+    purposes: ['business', 'livelihood'], gender: 'female',
+    partnerTypes: ['SCA'],
+    target: 'Women from Safai Karamchari families',
+    why: 'Higher ceiling than MSY for women in sanitation-worker households.',
+    source: 'NSFDC Circular — Mahila Adhikarita Yojana',
+    docs: ['SC Caste Certificate', 'Safai Karamchari occupational certificate', 'Family Income Certificate', 'Aadhaar Card', 'Project Proposal', 'Bank Passbook']
+  },
+  {
+    id: 'GBS', name: 'Green Business Scheme', short: 'GBS',
+    tagline: 'E-rickshaw, solar and clean-energy ventures',
+    maxLoan: 3000000, coverage: 0.90, rate: 5.5, rateLabel: '4–7%',
+    moratorium: 6, tenure: 84, incomeCap: 300000,
+    purposes: ['green'], gender: 'any',
+    partnerTypes: ['SCA', 'PSB'],
+    target: 'E-rickshaws, solar units, EV charging, waste recycling',
+    why: 'Purpose-built for clean-energy ventures with a Rs 30L ceiling and a 6-month moratorium.',
+    source: 'NSFDC Circular — Green Business Scheme',
+    docs: ['SC Caste Certificate', 'Family Income Certificate', 'Vendor quotation for green asset', 'Driving licence (for e-rickshaw)', 'Aadhaar Card', 'Bank Passbook']
+  },
+  {
+    id: 'SUPI', name: 'Stand-Up India (NSFDC tie-up)', short: 'SUPI',
+    tagline: 'Collateral-free enterprise loan, Rs 10L–27L',
+    maxLoan: 2700000, minLoan: 1000000, coverage: 0.85, rate: 8.0, rateLabel: '6–10%',
+    moratorium: 18, tenure: 84, incomeCap: 500000,
+    purposes: ['business', 'green'], gender: 'any',
+    partnerTypes: ['PSB'],
+    target: 'Greenfield SC/ST enterprises — manufacturing, services, trading',
+    why: 'The only route above Rs 5L that is collateral-free, with an 18-month moratorium to let the unit stabilise.',
+    source: 'Stand-Up India scheme guidelines + NSFDC refinance circular',
+    docs: ['SC Caste Certificate', 'Detailed Project Report (DPR)', 'PAN Card', 'Aadhaar Card', 'Proof of business premises', 'Bank statements (12 months)', 'Udyam Registration']
+  },
+  {
+    id: 'UDY', name: 'Udyam Nidhi Yojana', short: 'UDY',
+    tagline: 'Enterprise loan via cooperative societies',
+    maxLoan: 500000, coverage: 0.90, rate: 10.0, rateLabel: 'up to 12%',
+    moratorium: 0, tenure: 60, incomeCap: 300000,
+    purposes: ['business'], gender: 'any',
+    partnerTypes: ['SCA'],
+    target: 'Members of SC cooperative societies',
+    why: 'Fallback route when the SCA term-loan channel is saturated — higher rate, easier access.',
+    source: 'NSFDC Circular — Udyam Nidhi Yojana',
+    docs: ['SC Caste Certificate', 'Cooperative society membership proof', 'Family Income Certificate', 'Project Proposal', 'Aadhaar Card']
+  },
+  {
+    id: 'SUY', name: 'Swachhta Udyami Yojana', short: 'SUY',
+    tagline: 'Sanitation infrastructure — Rs 15L to Rs 50L',
+    maxLoan: 5000000, minLoan: 1500000, coverage: 0.90, rate: 4.0, rateLabel: '4%',
+    moratorium: 6, tenure: 120, incomeCap: 500000,
+    purposes: ['sanitation'], gender: 'any',
+    partnerTypes: ['SCA', 'PSB'],
+    target: 'Sanitary marts, pay-and-use toilets, vacuum emptier vehicles',
+    why: 'Largest ticket size in the NSFDC stack at just 4% — reserved for sanitation infrastructure.',
+    source: 'NSFDC Circular — Swachhta Udyami Yojana',
+    docs: ['SC Caste Certificate', 'Detailed Project Report', 'Municipal / ULB tie-up letter', 'Land or lease documents', 'Aadhaar Card', 'Bank statements']
+  },
+  {
+    id: 'SMILE', name: 'SMILE Scheme', short: 'SMILE',
+    tagline: 'Livelihood support for transgender persons',
+    maxLoan: 500000, coverage: 0.96, rate: 4.5, rateLabel: '4.5%',
+    moratorium: 12, tenure: 60, incomeCap: 300000,
+    purposes: ['business', 'livelihood'], gender: 'transgender',
+    partnerTypes: ['SCA'],
+    target: 'Transgender welfare and rehabilitation of persons engaged in begging',
+    why: '96% of project cost funded with a full 12-month moratorium — the most concessional terms in the portfolio.',
+    source: 'MoSJE SMILE scheme guidelines',
+    docs: ['Transgender Identity Certificate (NPTC)', 'Aadhaar Card', 'Income declaration', 'Activity / project note', 'Bank Passbook']
+  },
+  {
+    id: 'ELS', name: 'Educational Loan Scheme', short: 'ELS',
+    tagline: 'Higher education — Rs 20L in India, Rs 30L abroad',
+    maxLoan: 3000000, coverage: 1.0, rate: 4.0, rateLabel: '4% (3.5% for women)',
+    moratorium: 6, tenure: 60, incomeCap: 800000,
+    purposes: ['education'], gender: 'any',
+    partnerTypes: ['SCA'],
+    target: 'SC students in recognised UG / PG / professional courses',
+    why: 'Covers the full course fee at 4% — moratorium runs until 6 months after the course ends.',
+    source: 'NSFDC Circular — Educational Loan Scheme',
+    docs: ['SC Caste Certificate', 'Admission letter from recognised institution', 'Fee structure from institution', 'Family Income Certificate', 'Previous marksheets', 'Aadhaar Card', 'Co-borrower (parent) documents']
+  },
+  {
+    id: 'VETLS', name: 'Vocational Education & Training Loan', short: 'VETLS',
+    tagline: '100% funding for skill courses, up to Rs 4L',
+    maxLoan: 400000, coverage: 1.0, rate: 4.0, rateLabel: '4%',
+    moratorium: 6, tenure: 36, incomeCap: 300000,
+    purposes: ['skills', 'education'], gender: 'any',
+    partnerTypes: ['SCA'],
+    target: 'SC youth enrolling in ITI / skill-certification courses',
+    why: 'Funds 100% of a short skilling course — no own contribution required.',
+    source: 'NSFDC Circular — Vocational Education and Training Loan Scheme',
+    docs: ['SC Caste Certificate', 'Course admission / enrolment proof', 'Family Income Certificate', 'Aadhaar Card', 'Bank Passbook']
+  }
+];
+
+/* Channel partners — seeded from the public NSFDC SCA list and PSB
+   branch locators, then geocoded. Health status is SIMULATED for the
+   demo; production reads it from the NSFDC fund-utilisation feed. */
+const PARTNERS = [
+  { id:'P01', name:'MAHASWAYAM (Mahatma Phule Corp.)', type:'SCA', state:'Maharashtra', city:'Mumbai', lat:19.076, lng:72.877, health:'good', util:62, npa:4.1, phone:'022-2493 0800', schemes:['LVY','MSY','MAY','GBS','UDY','ELS','VETLS','SMILE','SUY'] },
+  { id:'P02', name:'MPBCDC Regional Office', type:'SCA', state:'Maharashtra', city:'Pune', lat:18.520, lng:73.856, health:'good', util:55, npa:3.4, phone:'020-2612 4411', schemes:['LVY','MSY','GBS','ELS','VETLS'] },
+  { id:'P03', name:'SBI SME Branch, Nagpur', type:'PSB', state:'Maharashtra', city:'Nagpur', lat:21.146, lng:79.088, health:'warn', util:88, npa:9.2, phone:'0712-256 3311', schemes:['SUPI','GBS','SUY'] },
+  { id:'P04', name:'TAHDCO Head Office', type:'SCA', state:'Tamil Nadu', city:'Chennai', lat:13.083, lng:80.270, health:'good', util:48, npa:2.8, phone:'044-2432 1100', schemes:['LVY','MSY','MAY','GBS','UDY','ELS','VETLS','SMILE','SUY'] },
+  { id:'P05', name:'TAHDCO District Unit', type:'SCA', state:'Tamil Nadu', city:'Madurai', lat:9.925, lng:78.119, health:'good', util:51, npa:3.0, phone:'0452-234 5566', schemes:['LVY','MSY','ELS','VETLS'] },
+  { id:'P06', name:'Indian Bank Stand-Up Cell', type:'PSB', state:'Tamil Nadu', city:'Coimbatore', lat:11.017, lng:76.956, health:'good', util:60, npa:4.5, phone:'0422-239 8877', schemes:['SUPI','SUY'] },
+  { id:'P07', name:'UPSCFDC Lucknow', type:'SCA', state:'Uttar Pradesh', city:'Lucknow', lat:26.847, lng:80.947, health:'warn', util:91, npa:11.4, phone:'0522-228 7700', schemes:['LVY','MSY','MAY','UDY','ELS','VETLS'] },
+  { id:'P08', name:'UPSCFDC Varanasi Branch', type:'SCA', state:'Uttar Pradesh', city:'Varanasi', lat:25.317, lng:82.973, health:'good', util:57, npa:5.1, phone:'0542-220 1188', schemes:['LVY','MSY','ELS','VETLS','GBS'] },
+  { id:'P09', name:'PNB Lead Bank Office', type:'PSB', state:'Uttar Pradesh', city:'Kanpur', lat:26.449, lng:80.331, health:'good', util:66, npa:5.8, phone:'0512-230 4499', schemes:['SUPI','GBS','SUY'] },
+  { id:'P10', name:'Prathama UP Gramin Bank', type:'RRB', state:'Uttar Pradesh', city:'Moradabad', lat:28.838, lng:78.773, health:'good', util:44, npa:3.9, phone:'0591-242 1010', schemes:['LVY','MSY'] },
+  { id:'P11', name:'WBSCSTDFC Kolkata', type:'SCA', state:'West Bengal', city:'Kolkata', lat:22.572, lng:88.363, health:'good', util:59, npa:4.2, phone:'033-2359 6600', schemes:['LVY','MSY','MAY','UDY','ELS','VETLS','SMILE'] },
+  { id:'P12', name:'Bangiya Gramin Vikash Bank', type:'RRB', state:'West Bengal', city:'Siliguri', lat:26.727, lng:88.395, health:'crit', util:97, npa:14.6, phone:'0353-251 3322', schemes:['LVY','MSY'] },
+  { id:'P13', name:'Bandhan Microfinance (NSFDC)', type:'NBFC', state:'West Bengal', city:'Howrah', lat:22.590, lng:88.310, health:'good', util:71, npa:6.0, phone:'033-4409 9090', schemes:['AMY'] },
+  { id:'P14', name:'BSFDC Patna', type:'SCA', state:'Bihar', city:'Patna', lat:25.594, lng:85.138, health:'warn', util:86, npa:10.8, phone:'0612-222 4455', schemes:['LVY','MSY','UDY','ELS','VETLS'] },
+  { id:'P15', name:'Dakshin Bihar Gramin Bank', type:'RRB', state:'Bihar', city:'Gaya', lat:24.796, lng:85.000, health:'good', util:63, npa:6.4, phone:'0631-222 7788', schemes:['LVY','MSY'] },
+  { id:'P16', name:'RGSCDC Jaipur', type:'SCA', state:'Rajasthan', city:'Jaipur', lat:26.912, lng:75.787, health:'good', util:52, npa:3.6, phone:'0141-222 9911', schemes:['LVY','MSY','MAY','GBS','ELS','VETLS','SUY'] },
+  { id:'P17', name:'Bank of Baroda Stand-Up Desk', type:'PSB', state:'Rajasthan', city:'Jodhpur', lat:26.238, lng:73.024, health:'good', util:58, npa:4.8, phone:'0291-251 6677', schemes:['SUPI','SUY'] },
+  { id:'P18', name:'GSCDC Gandhinagar', type:'SCA', state:'Gujarat', city:'Gandhinagar', lat:23.223, lng:72.650, health:'good', util:47, npa:2.9, phone:'079-2325 4400', schemes:['LVY','MSY','MAY','GBS','UDY','ELS','VETLS'] },
+  { id:'P19', name:'Arman Financial (NSFDC MFI)', type:'NBFC', state:'Gujarat', city:'Ahmedabad', lat:23.023, lng:72.571, health:'warn', util:89, npa:9.9, phone:'079-4050 1234', schemes:['AMY'] },
+  { id:'P20', name:'KSCFDC Bengaluru', type:'SCA', state:'Karnataka', city:'Bengaluru', lat:12.972, lng:77.594, health:'good', util:54, npa:3.3, phone:'080-2237 5566', schemes:['LVY','MSY','MAY','GBS','UDY','ELS','VETLS','SMILE','SUY'] },
+  { id:'P21', name:'Canara Bank Stand-Up Cell', type:'PSB', state:'Karnataka', city:'Mysuru', lat:12.295, lng:76.639, health:'good', util:61, npa:4.7, phone:'0821-242 3311', schemes:['SUPI','GBS'] },
+  { id:'P22', name:'APSCCFC Vijayawada', type:'SCA', state:'Andhra Pradesh', city:'Vijayawada', lat:16.507, lng:80.648, health:'good', util:56, npa:4.0, phone:'0866-247 8899', schemes:['LVY','MSY','MAY','GBS','ELS','VETLS'] },
+  { id:'P23', name:'Union Bank NSFDC Desk', type:'PSB', state:'Telangana', city:'Hyderabad', lat:17.385, lng:78.487, health:'warn', util:84, npa:8.6, phone:'040-2320 1100', schemes:['SUPI','GBS','SUY'], note:'Telangana has no appointed SCA — bank channel only.' },
+  { id:'P24', name:'Spandana Sphoorty (MFI)', type:'NBFC', state:'Telangana', city:'Warangal', lat:17.978, lng:79.594, health:'good', util:69, npa:6.2, phone:'0870-244 5566', schemes:['AMY'] },
+  { id:'P25', name:'MPSCFDC Bhopal', type:'SCA', state:'Madhya Pradesh', city:'Bhopal', lat:23.259, lng:77.413, health:'good', util:60, npa:5.4, phone:'0755-255 6677', schemes:['LVY','MSY','MAY','UDY','ELS','VETLS'] },
+  { id:'P26', name:'Madhyanchal Gramin Bank', type:'RRB', state:'Madhya Pradesh', city:'Sagar', lat:23.838, lng:78.737, health:'crit', util:95, npa:13.1, phone:'07582-22 3344', schemes:['LVY','MSY'] },
+  { id:'P27', name:'PSCFC Chandigarh', type:'SCA', state:'Punjab', city:'Chandigarh', lat:30.733, lng:76.779, health:'good', util:49, npa:3.1, phone:'0172-274 8899', schemes:['LVY','MSY','MAY','GBS','ELS','VETLS','SUY'] },
+  { id:'P28', name:'HSFDC Panchkula', type:'SCA', state:'Haryana', city:'Panchkula', lat:30.694, lng:76.858, health:'good', util:53, npa:3.8, phone:'0172-256 1122', schemes:['LVY','MSY','UDY','ELS','VETLS'] },
+  { id:'P29', name:'DSCFDC New Delhi', type:'SCA', state:'Delhi', city:'New Delhi', lat:28.614, lng:77.209, health:'good', util:50, npa:2.6, phone:'011-2337 4400', schemes:['LVY','MSY','MAY','GBS','UDY','ELS','VETLS','SMILE','SUY'] },
+  { id:'P30', name:'SBI Stand-Up India Cell, CP', type:'PSB', state:'Delhi', city:'New Delhi', lat:28.633, lng:77.219, health:'good', util:64, npa:4.4, phone:'011-2341 5566', schemes:['SUPI','SUY','GBS'] },
+  { id:'P31', name:'OSFDC Bhubaneswar', type:'SCA', state:'Odisha', city:'Bhubaneswar', lat:20.296, lng:85.825, health:'good', util:58, npa:5.0, phone:'0674-239 1100', schemes:['LVY','MSY','MAY','GBS','ELS','VETLS'] },
+  { id:'P32', name:'Utkal Grameen Bank', type:'RRB', state:'Odisha', city:'Sambalpur', lat:21.470, lng:83.970, health:'warn', util:87, npa:9.5, phone:'0663-240 7788', schemes:['LVY','MSY'] },
+  { id:'P33', name:'KSDC Thiruvananthapuram', type:'SCA', state:'Kerala', city:'Thiruvananthapuram', lat:8.524, lng:76.937, health:'good', util:45, npa:2.4, phone:'0471-247 5566', schemes:['LVY','MSY','MAY','GBS','ELS','VETLS','SMILE'] },
+  { id:'P34', name:'JSCSTDC Ranchi', type:'SCA', state:'Jharkhand', city:'Ranchi', lat:23.344, lng:85.310, health:'warn', util:83, npa:8.1, phone:'0651-244 3300', schemes:['LVY','MSY','UDY','ELS','VETLS'] },
+  { id:'P35', name:'CGAKVN Raipur', type:'SCA', state:'Chhattisgarh', city:'Raipur', lat:21.251, lng:81.629, health:'good', util:57, npa:4.9, phone:'0771-242 8899', schemes:['LVY','MSY','GBS','ELS','VETLS'] },
+  { id:'P36', name:'UKSCDC Dehradun', type:'SCA', state:'Uttarakhand', city:'Dehradun', lat:30.317, lng:78.032, health:'good', util:46, npa:3.2, phone:'0135-274 1122', schemes:['LVY','MSY','GBS','ELS','VETLS'] },
+  { id:'P37', name:'Assam SCDC Guwahati', type:'SCA', state:'Assam', city:'Guwahati', lat:26.145, lng:91.736, health:'warn', util:85, npa:9.0, phone:'0361-273 4455', schemes:['LVY','MSY','ELS','VETLS'] },
+  { id:'P38', name:'Muthoot Microfin (NSFDC)', type:'NBFC', state:'Kerala', city:'Kochi', lat:9.931, lng:76.267, health:'good', util:67, npa:5.6, phone:'0484-239 6677', schemes:['AMY'] }
+];
+
+const PARTNER_TYPE_LABEL = {
+  SCA: 'State Channelizing Agency',
+  PSB: 'Public Sector Bank',
+  RRB: 'Regional Rural Bank',
+  NBFC: 'NBFC-MFI'
+};
+
+const HEALTH_LABEL = {
+  good: 'Active & performing',
+  warn: 'High NPA — expect delays',
+  crit: 'Over-utilised — not accepting'
+};
+
+const STATES = [...new Set(PARTNERS.map(p => p.state))].sort();
+
+const STORIES = [
+  { name:'Sunita Devi', place:'Varanasi, Uttar Pradesh', scheme:'MSY', amount:120000,
+    quote:'I run a tailoring unit with four machines. Three women from my lane now work with me.',
+    detail:'Rs 1.2L under Mahila Samriddhi Yojana at 4%. Monthly EMI Rs 2,710, repaid in full in 44 months.' },
+  { name:'Ravi Kumar', place:'Nagpur, Maharashtra', scheme:'GBS', amount:280000,
+    quote:'The e-rickshaw pays for itself. I clear the EMI in twelve days of driving.',
+    detail:'Rs 2.8L under the Green Business Scheme with a 6-month moratorium while the permit came through.' },
+  { name:'Meena Rajan', place:'Madurai, Tamil Nadu', scheme:'ELS', amount:850000,
+    quote:'I am the first person in my family to finish a degree.',
+    detail:'Rs 8.5L educational loan at 3.5% (women concession). Repayment began 6 months after her B.Tech ended.' },
+  { name:'Arjun Patil', place:'Pune, Maharashtra', scheme:'SUPI', amount:1400000,
+    quote:'No collateral. That one fact is why the business exists.',
+    detail:'Rs 14L under Stand-Up India for a food-processing unit. An 18-month moratorium covered the setup year.' }
+];
+
+const TRACKER_STAGES = [
+  { key:'submitted', label:'Application submitted',            days:'Day 0',      done:true },
+  { key:'review',    label:'Document verification',            days:'Day 3–10',   done:true },
+  { key:'pcc',       label:'Project Clearance Committee',      days:'Day 25–60',  done:false, active:true },
+  { key:'sanction',  label:'Sanctioned by NSFDC',              days:'Day 60–90',  done:false },
+  { key:'disbursed', label:'Disbursed to your bank account',   days:'Day 90–120', done:false }
+];
+
+
+/* ============================================================
+   SahayaPath — Rule engine + EMI math
+   This is the deterministic layer. In production it runs BEFORE
+   and alongside the RAG/LLM call: the rule engine decides who is
+   eligible, the LLM only writes the explanation. If the two
+   disagree, the rule engine wins (see Risk 1 in the build guide).
+   ============================================================ */
+
+/* ---------- 1. Eligibility + scoring ---------- */
+
+function recommend(profile) {
+  const results = [];
+
+  SCHEMES.forEach(s => {
+    const reasons = [];   // why it matched
+    const blockers = [];  // why it did not
+
+    // --- Hard filters ---
+    if (!s.purposes.includes(profile.purpose)) {
+      blockers.push('Not meant for ' + PURPOSE_LABEL[profile.purpose].toLowerCase());
+    }
+    if (s.gender !== 'any' && s.gender !== profile.gender) {
+      blockers.push(s.gender === 'female'
+        ? 'Reserved for women applicants'
+        : 'Reserved for transgender applicants');
+    }
+    if (profile.income > s.incomeCap) {
+      blockers.push('Family income above the Rs ' + (s.incomeCap / 100000) + 'L ceiling');
+    }
+    if (s.minLoan && profile.cost < s.minLoan) {
+      blockers.push('Minimum project cost is ' + fmtShort(s.minLoan));
+    }
+
+    if (blockers.length) {
+      results.push({ scheme: s, eligible: false, score: 0, blockers, reasons });
+      return;
+    }
+
+    // --- Soft scoring (0-100) ---
+    let score = 50;
+
+    // Cost fit: how much of the project this scheme can actually fund
+    const sanction = Math.min(profile.cost * s.coverage, s.maxLoan);
+    const covered = sanction / profile.cost;
+    if (covered >= 0.95)      { score += 22; reasons.push('Funds ' + Math.round(covered * 100) + '% of your ' + fmtShort(profile.cost) + ' project'); }
+    else if (covered >= 0.85) { score += 18; reasons.push('Funds ' + Math.round(covered * 100) + '% of your project cost'); }
+    else if (covered >= 0.6)  { score += 8;  reasons.push('Covers ' + Math.round(covered * 100) + '% — you arrange the rest'); }
+    else                      { score -= 12; reasons.push('Ceiling of ' + fmtShort(s.maxLoan) + ' covers only ' + Math.round(covered * 100) + '% of your project'); }
+
+    // Rate: cheaper money scores higher
+    if (s.rate <= 4.5)      { score += 18; reasons.push('Lowest available rate at ' + s.rateLabel); }
+    else if (s.rate <= 6.5) { score += 12; reasons.push('Concessional rate of ' + s.rateLabel); }
+    else if (s.rate <= 10)  { score += 4;  reasons.push('Moderate rate of ' + s.rateLabel); }
+    else                    { score -= 10; reasons.push('Higher rate of ' + s.rateLabel + ' — the costliest NSFDC route'); }
+
+    // Moratorium: breathing room before the first EMI
+    if (s.moratorium >= 12)     { score += 10; reasons.push(s.moratorium + '-month moratorium before your first EMI'); }
+    else if (s.moratorium >= 6) { score += 7;  reasons.push(s.moratorium + '-month moratorium before repayment starts'); }
+    else if (s.moratorium > 0)  { score += 3; }
+
+    // Affordability against stated income
+    const emi = calcEMI(sanction, s.rate, s.tenure);
+    const monthlyIncome = profile.income / 12;
+    const burden = monthlyIncome > 0 ? emi / monthlyIncome : 1;
+    if (burden <= 0.2)      { score += 10; reasons.push('EMI is only ' + Math.round(burden * 100) + '% of your monthly income'); }
+    else if (burden <= 0.3) { score += 5; }
+    else if (burden <= 0.45){ score -= 8; }
+    else                    { score -= 20; }
+
+    // Targeting bonuses
+    if (profile.gender === 'female' && s.gender === 'female') { score += 8; reasons.push('Specifically reserved for SC women'); }
+    if (profile.gender === 'transgender' && s.gender === 'transgender') { score += 12; reasons.push('Designed for transgender applicants'); }
+    if (profile.rural && s.partnerTypes.includes('RRB')) { score += 4; reasons.push('Processed by Regional Rural Banks near you'); }
+
+    // Is there a healthy partner in this state for this scheme?
+    const partners = partnersFor(s.id, profile.state);
+    const healthy = partners.filter(p => p.health === 'good');
+    if (partners.length === 0) {
+      score -= 25;
+      reasons.push('No channel partner for this scheme in ' + profile.state);
+    } else if (healthy.length === 0) {
+      score -= 12;
+      reasons.push('Only high-NPA partners available in ' + profile.state + ' — expect delays');
+    } else {
+      score += 6;
+      reasons.push(healthy.length + ' healthy channel partner' + (healthy.length > 1 ? 's' : '') + ' in ' + profile.state);
+    }
+
+    results.push({
+      scheme: s,
+      eligible: true,
+      score: Math.max(5, Math.min(99, Math.round(score))),
+      sanction: Math.round(sanction),
+      emi: Math.round(emi),
+      burden,
+      reasons,
+      blockers,
+      partners
+    });
+  });
+
+  const eligible = results.filter(r => r.eligible).sort((a, b) => b.score - a.score);
+  const rejected = results.filter(r => !r.eligible);
+  return { eligible, rejected, profile };
+}
+
+const PURPOSE_LABEL = {
+  business:   'Start or grow a business',
+  green:      'Green / clean-energy venture',
+  education:  'Higher education',
+  skills:     'Skill or vocational training',
+  livelihood: 'Small livelihood activity',
+  sanitation: 'Sanitation infrastructure'
+};
+
+function partnersFor(schemeId, state) {
+  return PARTNERS.filter(p => p.schemes.includes(schemeId) && (!state || p.state === state));
+}
+
+/* ---------- 2. What-if analysis ---------- */
+
+function whatIf(profile, result) {
+  const notes = [];
+  const s = result.scheme;
+
+  if (result.sanction < profile.cost * s.coverage) {
+    notes.push('Your project cost exceeds this scheme’s ' + fmtShort(s.maxLoan) +
+      ' ceiling. Reduce the project to ' + fmtShort(Math.round(s.maxLoan / s.coverage)) +
+      ' and the scheme would fund the whole thing.');
+  }
+
+  const bigger = SCHEMES.filter(x =>
+    x.purposes.includes(profile.purpose) &&
+    (x.gender === 'any' || x.gender === profile.gender) &&
+    x.maxLoan > s.maxLoan
+  ).sort((a, b) => a.maxLoan - b.maxLoan)[0];
+
+  if (bigger && profile.income > bigger.incomeCap) {
+    notes.push('If your family income were under Rs ' + (bigger.incomeCap / 100000) +
+      'L you would also qualify for ' + bigger.name + ' (up to ' + fmtShort(bigger.maxLoan) + ').');
+  } else if (bigger && bigger.minLoan && profile.cost < bigger.minLoan) {
+    notes.push('If your project were ' + fmtShort(bigger.minLoan) + ' or more, ' + bigger.name +
+      ' opens up — ' + bigger.moratorium + '-month moratorium and up to ' + fmtShort(bigger.maxLoan) + '.');
+  }
+
+  if (profile.gender !== 'female') {
+    const womenOnly = SCHEMES.find(x => x.gender === 'female' && x.purposes.includes(profile.purpose));
+    if (womenOnly) {
+      notes.push('A woman applicant with the same profile would additionally qualify for ' +
+        womenOnly.name + ' at ' + womenOnly.rateLabel + '.');
+    }
+  }
+
+  if (result.burden > 0.3) {
+    const safeEmi = (profile.income / 12) * 0.3;
+    const safeLoan = reverseEMI(safeEmi, s.rate, s.tenure);
+    notes.push('To keep the EMI under 30% of your income, borrow about ' +
+      fmtShort(Math.round(safeLoan / 1000) * 1000) + ' instead of ' + fmtShort(result.sanction) + '.');
+  }
+
+  return notes;
+}
+
+/* ---------- 3. EMI math ---------- */
+
+// Standard reducing-balance EMI. P x r x (1+r)^n / ((1+r)^n - 1)
+function calcEMI(principal, annualRate, months) {
+  if (principal <= 0 || months <= 0) return 0;
+  const r = annualRate / 12 / 100;
+  if (r === 0) return principal / months;
+  const f = Math.pow(1 + r, months);
+  return (principal * r * f) / (f - 1);
+}
+
+function reverseEMI(emi, annualRate, months) {
+  const r = annualRate / 12 / 100;
+  if (r === 0) return emi * months;
+  const f = Math.pow(1 + r, months);
+  return (emi * (f - 1)) / (r * f);
+}
+
+/* Full schedule including a moratorium. During the moratorium no EMI
+   is paid but simple interest accrues and is capitalised — this is how
+   NSFDC circulars describe it for term loans. */
+function buildSchedule(principal, annualRate, months, moratorium) {
+  const r = annualRate / 12 / 100;
+  const accrued = principal * r * moratorium;      // interest during moratorium
+  const capitalised = principal + accrued;
+  const emi = calcEMI(capitalised, annualRate, months);
+
+  const rows = [];
+  let balance = capitalised;
+  let totalInterest = accrued;
+
+  for (let m = 1; m <= months; m++) {
+    const interest = balance * r;
+    const princ = emi - interest;
+    balance = Math.max(0, balance - princ);
+    totalInterest += interest;
+    rows.push({ month: m + moratorium, emi, interest, principal: princ, balance });
+  }
+
+  return {
+    emi: Math.round(emi),
+    accrued: Math.round(accrued),
+    capitalised: Math.round(capitalised),
+    totalInterest: Math.round(totalInterest),
+    totalPayable: Math.round(principal + totalInterest),
+    months, moratorium, rows
+  };
+}
+
+/* ---------- 4. Geo ---------- */
+
+// Haversine distance in km
+function distanceKm(a, b) {
+  const R = 6371;
+  const dLat = (b.lat - a.lat) * Math.PI / 180;
+  const dLng = (b.lng - a.lng) * Math.PI / 180;
+  const la1 = a.lat * Math.PI / 180, la2 = b.lat * Math.PI / 180;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(la1) * Math.cos(la2) * Math.sin(dLng / 2) ** 2;
+  return Math.round(2 * R * Math.asin(Math.sqrt(h)));
+}
+
+/* ---------- 5. Formatting ---------- */
+
+function fmtINR(n) {
+  return '₹' + Math.round(n).toLocaleString('en-IN');
+}
+
+function fmtShort(n) {
+  if (n >= 10000000) return '₹' + (n / 10000000).toFixed(n % 10000000 ? 2 : 0) + ' Cr';
+  if (n >= 100000)   return '₹' + (n / 100000).toFixed(n % 100000 ? 2 : 0) + 'L';
+  if (n >= 1000)     return '₹' + (n / 1000).toFixed(n % 1000 ? 1 : 0) + 'K';
+  return '₹' + n;
+}
+
+
+/* ============================================================
+   SahayaPath — prototype application shell
+   Vanilla JS, no build step. In the real build this is Next.js +
+   React; the state shape here mirrors what the API will return.
+   ============================================================ */
+
+const state = {
+  view: 'home',
+  profile: { purpose: null, cost: 200000, income: 180000, gender: null, state: null, rural: false },
+  results: null,
+  selected: null,       // selected scheme result
+  calcScheme: null,
+  calcAmount: 0,
+  mapScheme: 'ALL',
+  mapState: 'ALL',
+  mapSelected: null,
+  docsChecked: {},
+  step: 0
+};
+
+/* ---------------- Navigation ---------------- */
+
+function go(view) {
+  state.view = view;
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === 'view-' + view));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('on', b.dataset.view === view));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (view === 'locator') renderMap();
+  if (view === 'calculator') renderCalc();
+  if (view === 'docs') renderDocs();
+  if (view === 'stories') renderStories();
+}
+
+/* ---------------- Chat wizard ---------------- */
+
+const QUESTIONS = [
+  {
+    key: 'purpose', type: 'options',
+    q: 'What do you want the money for?',
+    hint: 'Pick the closest one — we will fine-tune later.',
+    opts: [
+      { v: 'business',   ico: '🏪', label: 'Start or grow a business', sub: 'Shop, trade, service unit' },
+      { v: 'green',      ico: '🌿', label: 'Green venture',            sub: 'E-rickshaw, solar, recycling' },
+      { v: 'education',  ico: '🎓', label: 'Higher education',         sub: 'Degree or professional course' },
+      { v: 'skills',     ico: '🔧', label: 'Skill training',           sub: 'ITI or certification course' },
+      { v: 'livelihood', ico: '🧺', label: 'Small livelihood work',    sub: 'Under Rs 1.5 lakh' },
+      { v: 'sanitation', ico: '🚛', label: 'Sanitation business',      sub: 'Sanitary mart, emptier vehicle' }
+    ]
+  },
+  {
+    key: 'cost', type: 'slider',
+    q: 'How much will your project cost in total?',
+    hint: 'Include equipment, stock, and setup — not just the loan you need.',
+    min: 25000, max: 3000000, step: 25000
+  },
+  {
+    key: 'income', type: 'slider',
+    q: 'What is your family’s annual income?',
+    hint: 'Most NSFDC schemes need this to be under Rs 3 lakh.',
+    min: 30000, max: 900000, step: 10000
+  },
+  {
+    key: 'gender', type: 'options',
+    q: 'How do you identify?',
+    hint: 'Some schemes are reserved for women or transgender applicants.',
+    opts: [
+      { v: 'female', ico: '👩', label: 'Woman' },
+      { v: 'male', ico: '👨', label: 'Man' },
+      { v: 'transgender', ico: '🏳️‍⚧️', label: 'Transgender' }
+    ]
+  },
+  {
+    key: 'state', type: 'select',
+    q: 'Which state do you live in?',
+    hint: 'We use this to find the channel partner nearest to you.'
+  },
+  {
+    key: 'rural', type: 'options',
+    q: 'Do you live in a village or a town/city?',
+    hint: '75% of SC citizens live in rural areas — rural applicants get routed to Gramin Banks.',
+    opts: [
+      { v: true, ico: '🌾', label: 'Village / rural area' },
+      { v: false, ico: '🏙️', label: 'Town or city' }
+    ]
+  }
+];
+
+function startChat(preset) {
+  state.step = 0;
+  state.profile = { purpose: null, cost: 200000, income: 180000, gender: null, state: null, rural: false };
+  document.getElementById('chat-body').innerHTML = '';
+  document.getElementById('voice-demo').style.display = preset ? 'block' : 'none';
+  go('chat');
+
+  if (preset) {
+    // Simulated Hindi voice query — the judge-facing demo moment.
+    botSay('Namaste! Aapki baat sun li. Main samajh gaya:', true);
+    setTimeout(() => {
+      userSay('“Mujhe apna doodh ka business shuru karna hai, 2 lakh chahiye”');
+      setTimeout(() => {
+        state.profile.purpose = 'business';
+        state.profile.cost = 200000;
+        botSay('Dairy business, ₹2 lakh. Got it — just a few more questions and I will find your scheme.');
+        state.step = 2;
+        setTimeout(askCurrent, 700);
+      }, 800);
+    }, 700);
+  } else {
+    botSay('Namaste! I am SahayaPath. I will ask you 6 simple questions and find the government loan scheme that fits you best.');
+    setTimeout(askCurrent, 800);
+  }
+}
+
+function botSay(text, plain) {
+  const b = document.getElementById('chat-body');
+  b.insertAdjacentHTML('beforeend',
+    `<div class="msg msg-bot"><div class="chat-avatar">स</div><div class="bubble">${text}</div></div>`);
+  b.scrollTop = b.scrollHeight;
+}
+
+function userSay(text) {
+  const b = document.getElementById('chat-body');
+  b.insertAdjacentHTML('beforeend', `<div class="msg msg-user"><div class="bubble">${text}</div></div>`);
+  b.scrollTop = b.scrollHeight;
+}
+
+function askCurrent() {
+  const q = QUESTIONS[state.step];
+  const pct = (state.step / QUESTIONS.length) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+
+  if (!q) { finishChat(); return; }
+
+  botSay(`<div class="q">${q.q}</div><div class="hint">${q.hint}</div>`);
+  const foot = document.getElementById('chat-foot');
+
+  if (q.type === 'options') {
+    foot.innerHTML = `<div class="opts">` + q.opts.map(o =>
+      `<button class="opt" onclick="answer('${q.key}', ${typeof o.v === 'boolean' ? o.v : `'${o.v}'`}, '${o.label}')">
+         <span class="ico">${o.ico}</span>
+         <span>${o.label}${o.sub ? `<span class="sub">${o.sub}</span>` : ''}</span>
+       </button>`).join('') + `</div>`;
+  }
+
+  if (q.type === 'slider') {
+    const cur = state.profile[q.key];
+    foot.innerHTML = `
+      <div class="slider-row">
+        <span class="slider-val" id="sv">${fmtShort(cur)}</span>
+        <input type="range" id="sr" min="${q.min}" max="${q.max}" step="${q.step}" value="${cur}"
+               oninput="document.getElementById('sv').textContent = fmtShort(+this.value)">
+      </div>
+      <div class="muted" style="margin-top:6px">${fmtShort(q.min)} — ${fmtShort(q.max)}</div>
+      <button class="btn btn-primary btn-sm" style="margin-top:12px"
+              onclick="answer('${q.key}', +document.getElementById('sr').value, fmtShort(+document.getElementById('sr').value))">
+        Confirm →
+      </button>`;
+  }
+
+  if (q.type === 'select') {
+    foot.innerHTML = `
+      <select id="st" style="width:100%;padding:11px 12px;border:1.5px solid var(--border-strong);border-radius:8px;background:var(--surface)">
+        <option value="">Select your state…</option>
+        ${STATES.map(s => `<option value="${s}">${s}</option>`).join('')}
+      </select>
+      <button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="answerState()">Confirm →</button>`;
+  }
+}
+
+function answerState() {
+  const v = document.getElementById('st').value;
+  if (!v) return;
+  answer('state', v, v);
+}
+
+function answer(key, value, label) {
+  state.profile[key] = value;
+  userSay(label);
+  document.getElementById('chat-foot').innerHTML = '';
+  state.step++;
+  setTimeout(askCurrent, 450);
+}
+
+function finishChat() {
+  document.getElementById('progress').style.width = '100%';
+  botSay('<div class="q">Checking 11 NSFDC schemes against your profile…</div><div class="hint">Rule engine → eligibility filter → RAG retrieval → ranked match</div>');
+  setTimeout(() => {
+    state.results = recommend(state.profile);
+    renderResults();
+    go('results');
+  }, 1100);
+}
+
+/* ---------------- Results ---------------- */
+
+function renderResults() {
+  const { eligible, rejected, profile } = state.results;
+  const el = document.getElementById('results-body');
+
+  if (!eligible.length) {
+    el.innerHTML = `<div class="empty">No scheme matched this profile. Try adjusting the project cost or income.</div>`;
+    return;
+  }
+
+  const top = eligible.slice(0, 3);
+
+  el.innerHTML = `
+    <div class="panel" style="margin-bottom:20px">
+      <div class="why-title">Your profile</div>
+      <div class="pill-row">
+        <span class="pill">${PURPOSE_LABEL[profile.purpose]}</span>
+        <span class="pill">Project ${fmtShort(profile.cost)}</span>
+        <span class="pill">Income ${fmtShort(profile.income)}/yr</span>
+        <span class="pill">${profile.gender}</span>
+        <span class="pill">${profile.state}</span>
+        <span class="pill">${profile.rural ? 'Rural' : 'Urban'}</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="startChat(false)">↺ Change my answers</button>
+    </div>
+
+    <div class="result-grid">
+      ${top.map((r, i) => rcard(r, i)).join('')}
+    </div>
+
+    ${rejected.length ? `
+      <div class="rejected">
+        <div class="why-title">Ruled out by the eligibility engine (${rejected.length})</div>
+        ${rejected.map(r => `
+          <div class="rej-row">
+            <span class="rej-name">${r.scheme.name}</span>
+            <span class="rej-why">${r.blockers[0]}</span>
+          </div>`).join('')}
+      </div>` : ''}
+
+    <div class="note">
+      <strong>How this ranking works:</strong> a deterministic rule engine first removes every scheme the
+      applicant is not eligible for, then scores the survivors on coverage, interest rate, moratorium,
+      EMI affordability and live channel-partner health in their state. In production the LLM only writes
+      the explanation text — it never decides eligibility, which is how we prevent hallucinated advice.
+    </div>`;
+}
+
+function rcard(r, i) {
+  const s = r.scheme;
+  const burdenPct = Math.round(r.burden * 100);
+  const warn = r.burden > 0.45
+    ? `<div class="warn-bar bad">⚠ At full sanction the EMI is <strong>&nbsp;${burdenPct}% of your monthly income</strong>. Borrow less or extend the tenure.</div>`
+    : r.burden > 0.3
+      ? `<div class="warn-bar">⚠ EMI would be ${burdenPct}% of monthly income — above the 30% comfort threshold.</div>`
+      : '';
+
+  const notes = whatIf(state.profile, r);
+
+  return `
+  <div class="rcard ${i === 0 ? 'top' : ''}">
+    <div class="rcard-head">
+      <div class="rank">${i + 1}</div>
+      <div>
+        <h3>${s.name}</h3>
+        <div class="tagline">${s.tagline}</div>
+      </div>
+      <div class="score-ring">
+        <div class="score-num">${r.score}</div>
+        <div class="score-lbl">match</div>
+      </div>
+    </div>
+
+    <div class="terms">
+      <div class="term"><div class="k">Sanction</div><div class="v">${fmtINR(r.sanction)}</div></div>
+      <div class="term"><div class="k">Rate</div><div class="v">${s.rateLabel}</div></div>
+      <div class="term"><div class="k">Moratorium</div><div class="v">${s.moratorium ? s.moratorium + ' mo' : 'None'}</div></div>
+      <div class="term"><div class="k">Tenure</div><div class="v">${s.tenure} mo</div></div>
+      <div class="term"><div class="k">Est. EMI</div><div class="v">${fmtINR(r.emi)}</div></div>
+    </div>
+
+    ${warn}
+
+    <div class="why">
+      <div class="why-title">Why this fits you</div>
+      <ul>${r.reasons.slice(0, 5).map(x => `<li${/No channel|Only high-NPA|Higher rate|ceiling of/i.test(x) ? ' class="neg"' : ''}>${x}</li>`).join('')}</ul>
+      ${notes.length ? `
+        <div class="why-title" style="margin-top:16px">What if…</div>
+        <ul>${notes.map(n => `<li class="neg">${n}</li>`).join('')}</ul>` : ''}
+    </div>
+
+    <div class="rcard-foot">
+      <span class="src">Source: ${s.source}</span>
+      <button class="btn btn-primary btn-sm" onclick="openCalc('${s.id}', ${r.sanction})">Calculate EMI</button>
+      <button class="btn btn-ghost btn-sm" onclick="openLocator('${s.id}')">Find partner</button>
+      <button class="btn btn-ghost btn-sm" onclick="openDocs('${s.id}')">Documents</button>
+    </div>
+  </div>`;
+}
+
+/* ---------------- Calculator ---------------- */
+
+function openCalc(schemeId, amount) {
+  state.calcScheme = schemeId;
+  state.calcAmount = amount || null;
+  go('calculator');
+}
+
+function renderCalc() {
+  const sel = document.getElementById('calc-scheme');
+  if (!sel.options.length) {
+    sel.innerHTML = SCHEMES.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+  }
+  if (state.calcScheme) sel.value = state.calcScheme;
+  const s = SCHEMES.find(x => x.id === sel.value);
+
+  const amtInput = document.getElementById('calc-amount');
+  const tenInput = document.getElementById('calc-tenure');
+  const rateInput = document.getElementById('calc-rate');
+  const morInput = document.getElementById('calc-mor');
+
+  if (state.calcAmount) { amtInput.value = state.calcAmount; state.calcAmount = null; }
+  else if (!amtInput.value || +amtInput.value > s.maxLoan) amtInput.value = Math.round(s.maxLoan * 0.6);
+
+  amtInput.max = s.maxLoan;
+  if (document.activeElement !== rateInput) rateInput.value = s.rate;
+  if (document.activeElement !== tenInput) tenInput.value = s.tenure;
+  if (document.activeElement !== morInput) morInput.value = s.moratorium;
+
+  document.getElementById('calc-caps').innerHTML = `
+    <div class="pill-row">
+      <span class="pill">Max ${fmtShort(s.maxLoan)}</span>
+      <span class="pill">${Math.round(s.coverage * 100)}% of project cost</span>
+      <span class="pill">Rate ${s.rateLabel}</span>
+      <span class="pill">Moratorium ${s.moratorium || 0} mo</span>
+      <span class="pill">Via ${s.partnerTypes.join(' / ')}</span>
+    </div>`;
+
+  const P = Math.min(+amtInput.value, s.maxLoan);
+  const sch = buildSchedule(P, +rateInput.value, +tenInput.value, +morInput.value);
+  const monthlyIncome = state.profile.income ? state.profile.income / 12 : 0;
+  const burden = monthlyIncome ? sch.emi / monthlyIncome : 0;
+
+  document.getElementById('calc-out').innerHTML = `
+    <div class="emi-hero">
+      <div class="k">Monthly EMI</div>
+      <div class="v">${fmtINR(sch.emi)}</div>
+      <div class="s">for ${sch.months} months, starting after a ${sch.moratorium}-month moratorium</div>
+    </div>
+    <div class="breakdown">
+      <div class="bd"><div class="k">Loan amount</div><div class="v">${fmtINR(P)}</div></div>
+      <div class="bd"><div class="k">Interest during moratorium</div><div class="v">${fmtINR(sch.accrued)}</div></div>
+      <div class="bd"><div class="k">Total interest</div><div class="v">${fmtINR(sch.totalInterest)}</div></div>
+      <div class="bd"><div class="k">Total repayable</div><div class="v">${fmtINR(sch.totalPayable)}</div></div>
+    </div>
+    ${monthlyIncome ? affordability(burden, sch.emi, monthlyIncome) : ''}
+    <div class="chart-wrap">
+      <div class="why-title">Principal vs interest over time</div>
+      ${amortChart(sch)}
+      <div class="chart-legend">
+        <span><i class="swatch" style="background:#1B6B4A"></i> Principal repaid</span>
+        <span><i class="swatch" style="background:#C2611A"></i> Interest paid</span>
+        <span><i class="swatch" style="background:#C4BCAA"></i> Outstanding balance</span>
+      </div>
+    </div>`;
+
+  renderCompare(P);
+}
+
+function affordability(burden, emi, income) {
+  const pct = Math.round(burden * 100);
+  if (burden <= 0.3) {
+    return `<div class="warn-bar" style="background:var(--green-soft);border-color:rgba(27,107,74,.3);color:var(--green-dark);margin:16px 0 0">
+      ✓ Affordable — this EMI is ${pct}% of your ${fmtINR(income)} monthly income, within the 30% comfort threshold.</div>`;
+  }
+  return `<div class="warn-bar ${burden > 0.45 ? 'bad' : ''}" style="margin:16px 0 0">
+    ⚠ This EMI is <strong>&nbsp;${pct}%&nbsp;</strong> of your ${fmtINR(income)} monthly income.
+    Lenders generally decline above 45%. Consider borrowing ${fmtShort(Math.round(reverseEMI(income * 0.3, 6, 60) / 10000) * 10000)} or less.</div>`;
+}
+
+function amortChart(sch) {
+  const W = 560, H = 190, pad = { l: 8, r: 8, t: 10, b: 22 };
+  const n = sch.rows.length;
+  const maxBal = sch.rows[0].balance + sch.rows[0].principal;
+  const x = i => pad.l + (i / (n - 1)) * (W - pad.l - pad.r);
+  const y = v => pad.t + (1 - v / maxBal) * (H - pad.t - pad.b);
+
+  let cumP = 0, cumI = 0;
+  const pPts = [], iPts = [], bPts = [];
+  sch.rows.forEach((r, i) => {
+    cumP += r.principal; cumI += r.interest;
+    pPts.push(`${x(i)},${y(cumP)}`);
+    iPts.push(`${x(i)},${y(cumI)}`);
+    bPts.push(`${x(i)},${y(r.balance)}`);
+  });
+
+  return `
+  <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;margin-top:8px">
+    <rect x="0" y="0" width="${W}" height="${H}" fill="var(--surface-alt)" rx="8"/>
+    ${[0.25, 0.5, 0.75].map(f => `<line x1="${pad.l}" x2="${W - pad.r}" y1="${pad.t + f * (H - pad.t - pad.b)}" y2="${pad.t + f * (H - pad.t - pad.b)}" stroke="var(--border)" stroke-dasharray="3 4"/>`).join('')}
+    <polyline points="${bPts.join(' ')}" fill="none" stroke="#C4BCAA" stroke-width="2"/>
+    <polyline points="${pPts.join(' ')}" fill="none" stroke="#1B6B4A" stroke-width="2.5"/>
+    <polyline points="${iPts.join(' ')}" fill="none" stroke="#C2611A" stroke-width="2.5"/>
+    <text x="${pad.l}" y="${H - 6}" font-size="10" fill="var(--text-3)" font-family="monospace">month ${sch.moratorium + 1}</text>
+    <text x="${W - pad.r}" y="${H - 6}" font-size="10" fill="var(--text-3)" font-family="monospace" text-anchor="end">month ${sch.moratorium + n}</text>
+  </svg>`;
+}
+
+function renderCompare(amount) {
+  const p = state.profile;
+  const candidates = SCHEMES.filter(s =>
+    (!p.purpose || s.purposes.includes(p.purpose)) &&
+    (s.gender === 'any' || s.gender === p.gender || !p.gender) &&
+    amount <= s.maxLoan
+  ).slice(0, 5);
+
+  const pool = candidates.length >= 2 ? candidates
+    : SCHEMES.filter(s => amount <= s.maxLoan).slice(0, 5);
+
+  const rows = pool.map(s => {
+    const sch = buildSchedule(amount, s.rate, s.tenure, s.moratorium);
+    return { s, sch };
+  }).sort((a, b) => a.sch.totalPayable - b.sch.totalPayable);
+
+  document.getElementById('calc-compare').innerHTML = rows.length < 2 ? '' : `
+    <h3>Side-by-side at ${fmtINR(amount)}</h3>
+    <div class="muted" style="margin-bottom:10px">Same loan amount, different scheme terms. Cheapest total cost first.</div>
+    <div style="overflow-x:auto">
+    <table class="cmp-table">
+      <thead><tr><th>Scheme</th><th>Rate</th><th>Moratorium</th><th>EMI</th><th>Total interest</th><th>Total payable</th></tr></thead>
+      <tbody>
+        ${rows.map((r, i) => `
+          <tr class="${i === 0 ? 'best' : ''}">
+            <td>${r.s.short}${i === 0 ? ' &nbsp;<span class="pill">cheapest</span>' : ''}</td>
+            <td>${r.s.rateLabel}</td>
+            <td>${r.s.moratorium || 0} mo</td>
+            <td>${fmtINR(r.sch.emi)}</td>
+            <td>${fmtINR(r.sch.totalInterest)}</td>
+            <td>${fmtINR(r.sch.totalPayable)}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table></div>`;
+}
+
+/* ---------------- Map / locator ---------------- */
+
+// Simplified India outline, drawn from an equirectangular projection of
+// the national boundary. Good enough for a prototype; Leaflet + OSM
+// tiles replace this in the real build.
+const INDIA_PTS = [
+  [68.2,23.7],[68.9,22.3],[69.8,22.9],[72.6,21.5],[72.9,19.2],[73.5,16.0],[74.9,13.0],
+  [76.0,10.0],[77.5,8.1],[79.8,10.3],[80.3,13.1],[82.2,16.8],[84.8,19.1],[86.9,21.6],
+  [88.1,21.7],[89.1,22.0],[88.9,25.2],[88.0,26.5],[89.8,26.7],[92.0,26.9],[94.3,27.5],
+  [95.4,26.7],[97.0,27.9],[96.5,29.0],[94.0,29.4],[91.7,27.9],[88.9,27.4],[88.1,26.7],
+  [84.6,27.2],[81.0,30.3],[79.0,32.0],[78.7,34.5],[77.0,35.5],[76.5,34.6],[74.0,34.5],
+  [73.9,33.2],[74.6,32.5],[72.9,31.0],[71.0,28.0],[70.0,25.5]
+];
+
+const MAP_W = 620, MAP_H = 620;
+const projX = lng => (lng - 67.0) * (MAP_W / 32);
+const projY = lat => (38.0 - lat) * (MAP_H / 31);
+
+const HEALTH_COLOR = { good: '#1B6B4A', warn: '#C2941A', crit: '#A32424' };
+
+function openLocator(schemeId) {
+  state.mapScheme = schemeId || 'ALL';
+  state.mapState = state.profile.state || 'ALL';
+  state.mapSelected = null;
+  go('locator');
+}
+
+function renderMap() {
+  const ss = document.getElementById('map-scheme');
+  if (!ss.options.length) {
+    ss.innerHTML = `<option value="ALL">All schemes</option>` +
+      SCHEMES.map(s => `<option value="${s.id}">${s.short} — ${s.name}</option>`).join('');
+  }
+  ss.value = state.mapScheme;
+
+  const st = document.getElementById('map-state');
+  if (!st.options.length) {
+    st.innerHTML = `<option value="ALL">All states</option>` + STATES.map(s => `<option value="${s}">${s}</option>`).join('');
+  }
+  st.value = state.mapState;
+
+  const list = PARTNERS.filter(p =>
+    (state.mapScheme === 'ALL' || p.schemes.includes(state.mapScheme)) &&
+    (state.mapState === 'ALL' || p.state === state.mapState)
+  );
+
+  // Distance is measured from the state's first partner as a stand-in
+  // for the user's GPS fix in the real app.
+  const origin = state.mapState !== 'ALL' && list.length ? list[0] : null;
+  const sorted = origin
+    ? list.map(p => ({ ...p, dist: distanceKm(origin, p) })).sort((a, b) => a.dist - b.dist)
+    : list;
+
+  // SVG map
+  const path = INDIA_PTS.map((p, i) => (i ? 'L' : 'M') + projX(p[0]).toFixed(1) + ' ' + projY(p[1]).toFixed(1)).join(' ') + ' Z';
+  const shownIds = new Set(list.map(p => p.id));
+
+  document.getElementById('map-canvas').innerHTML = `
+    <svg viewBox="0 0 ${MAP_W} ${MAP_H}">
+      <path class="india-fill" d="${path}"/>
+      ${PARTNERS.map(p => {
+        const shown = shownIds.has(p.id);
+        const c = HEALTH_COLOR[p.health];
+        return `<g class="pin ${shown ? '' : 'dim'} ${state.mapSelected === p.id ? 'sel' : ''}"
+                   onclick="selectPartner('${p.id}')" transform="translate(${projX(p.lng).toFixed(1)},${projY(p.lat).toFixed(1)})">
+          <circle class="halo" r="15" fill="${c}"/>
+          <circle class="body" r="6.5" fill="${c}" stroke="#fff" stroke-width="1.8"/>
+        </g>`;
+      }).join('')}
+    </svg>`;
+
+  document.getElementById('map-count').textContent =
+    `${list.length} eligible partner${list.length === 1 ? '' : 's'}` +
+    (state.mapScheme !== 'ALL' ? ` for ${state.mapScheme}` : '');
+
+  document.getElementById('plist').innerHTML = sorted.length ? sorted.map(p => `
+    <div class="pcard ${state.mapSelected === p.id ? 'sel' : ''}" onclick="selectPartner('${p.id}')">
+      <div class="pcard-top">
+        <div style="flex:1">
+          <h4>${p.name}</h4>
+          <div class="pmeta">${p.city}, ${p.state}${p.dist !== undefined ? ' · ' + p.dist + ' km away' : ''} · ☎ ${p.phone}</div>
+        </div>
+        <span class="ptype ${p.type}">${p.type}</span>
+      </div>
+      <span class="health-chip health-${p.health}">
+        <i class="dot" style="background:${HEALTH_COLOR[p.health]}"></i>${HEALTH_LABEL[p.health]}
+      </span>
+      <div class="util-bar"><div class="util-fill" style="width:${p.util}%;background:${HEALTH_COLOR[p.health]}"></div></div>
+      <div class="muted" style="margin-top:5px;font-size:11.5px">Fund utilisation ${p.util}% · NPA ${p.npa}%</div>
+      ${state.mapSelected === p.id ? `
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+          <div class="muted" style="margin-bottom:8px">${PARTNER_TYPE_LABEL[p.type]} · processes ${p.schemes.length} schemes</div>
+          <div class="pill-row" style="margin-bottom:12px">${p.schemes.map(s => `<span class="pill">${s}</span>`).join('')}</div>
+          ${p.note ? `<div class="muted" style="margin-bottom:10px">ⓘ ${p.note}</div>` : ''}
+          ${p.health === 'crit'
+            ? `<div class="warn-bar bad" style="margin:0 0 10px">⚠ Over-utilised. Applications routed here are likely to stall — pick another partner.</div>`
+            : p.health === 'warn'
+              ? `<div class="warn-bar" style="margin:0 0 10px">⚠ NPA at ${p.npa}%. Expect a slower sanction cycle.</div>` : ''}
+          <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();alert('Opens turn-by-turn navigation to ${p.name}, ${p.city}.\\n\\n(Real build: deep-links to OSM / Google Maps.)')">🧭 Route me here</button>
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();go('tracker')">Start application</button>
+        </div>` : ''}
+    </div>`).join('')
+    : `<div class="empty">No channel partner processes this scheme in the selected state.<br>Try “All states”, or pick a scheme routed through banks.</div>`;
+}
+
+function selectPartner(id) {
+  state.mapSelected = state.mapSelected === id ? null : id;
+  renderMap();
+}
+
+function onMapFilter() {
+  state.mapScheme = document.getElementById('map-scheme').value;
+  state.mapState = document.getElementById('map-state').value;
+  state.mapSelected = null;
+  renderMap();
+}
+
+/* ---------------- Documents ---------------- */
+
+function openDocs(schemeId) {
+  state.selected = schemeId;
+  go('docs');
+}
+
+function renderDocs() {
+  const sel = document.getElementById('doc-scheme');
+  if (!sel.options.length) {
+    sel.innerHTML = SCHEMES.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+  }
+  if (state.selected) sel.value = state.selected;
+  const s = SCHEMES.find(x => x.id === sel.value);
+  state.selected = s.id;
+
+  const checked = state.docsChecked[s.id] || {};
+  const done = s.docs.filter((_, i) => checked[i]).length;
+
+  document.getElementById('doc-body').innerHTML = `
+    <div class="panel">
+      <div class="section-head">
+        <h3>${s.name}</h3>
+        <span class="muted">${done} of ${s.docs.length} ready</span>
+      </div>
+      <div class="progress-track" style="border-radius:3px;margin-top:8px">
+        <div class="progress-fill" style="width:${(done / s.docs.length) * 100}%;border-radius:3px"></div>
+      </div>
+      <div class="doc-list">
+        ${s.docs.map((d, i) => `
+          <div class="doc-item ${checked[i] ? 'done' : ''}" onclick="toggleDoc('${s.id}',${i})">
+            <div class="doc-check">✓</div>
+            <div class="doc-name">${d}</div>
+          </div>`).join('')}
+      </div>
+      ${done === s.docs.length
+        ? `<div class="warn-bar" style="background:var(--green-soft);border-color:rgba(27,107,74,.3);color:var(--green-dark);margin-top:16px">
+             ✓ All documents ready. You can walk into the channel partner office in one trip.</div>`
+        : `<div class="note">Missing documents are why <strong>77% of applicants make repeated office visits</strong>
+             (MoSJE evaluation of NSFDC). Tick each item off before you travel.</div>`}
+      <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" onclick="alert('Generates a pre-filled project proposal in the applicant’s language, matched to ${s.short} guidelines.\\n\\n(Real build: LLM fills an NSFDC-format DPR template.)')">📄 Generate my project proposal</button>
+        <button class="btn btn-ghost btn-sm" onclick="openLocator('${s.id}')">Find where to submit</button>
+      </div>
+    </div>`;
+}
+
+function toggleDoc(schemeId, i) {
+  state.docsChecked[schemeId] = state.docsChecked[schemeId] || {};
+  state.docsChecked[schemeId][i] = !state.docsChecked[schemeId][i];
+  renderDocs();
+}
+
+/* ---------------- Tracker + stories ---------------- */
+
+function renderTracker() {
+  document.getElementById('track-body').innerHTML = `
+    <div class="panel">
+      <div class="section-head">
+        <h3>Application NSF/2026/UP/04417</h3>
+        <span class="pill">Laghu Vyavsay Yojana · ₹4,50,000</span>
+      </div>
+      <div class="muted">Submitted at UPSCFDC Varanasi Branch on 12 August 2026</div>
+      <div class="track">
+        ${TRACKER_STAGES.map(s => `
+          <div class="tstep ${s.done ? 'done' : ''} ${s.active ? 'active' : ''}">
+            <div class="lbl">${s.label}</div>
+            <div class="day">${s.days}${s.active ? ' · currently here' : ''}</div>
+          </div>`).join('')}
+      </div>
+      <div class="note">
+        Today an applicant has no way to know where their file sits — the average wait is
+        <strong>3 months to sanction plus 1 more to disbursement</strong>, with no status visibility.
+        Making the stage machine-readable is what turns that into Impact Goal 2: transparency in the
+        channel finance ecosystem.
+      </div>
+    </div>`;
+}
+
+function renderStories() {
+  document.getElementById('stories-body').innerHTML = `
+    <div class="story-grid">
+      ${STORIES.map(s => {
+        const sc = SCHEMES.find(x => x.id === s.scheme);
+        return `<div class="story">
+          <span class="story-chip">${sc.short} · ${fmtShort(s.amount)}</span>
+          <div class="quote">“${s.quote}”</div>
+          <div class="who">
+            <div class="nm">${s.name}</div>
+            <div class="pl">${s.place}</div>
+            <div class="dt">${s.detail}</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="note">
+      Only <strong>2.6% of beneficiaries learn about these schemes through official awareness camps</strong> —
+      61% hear about them from friends and relatives. A story feed is financial literacy delivered through
+      the channel people actually trust, which is Impact Goal 1 in the problem statement.
+    </div>`;
+}
+
+/* ---------------- Boot ---------------- */
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.nav button').forEach(b =>
+    b.addEventListener('click', () => go(b.dataset.view)));
+  document.getElementById('calc-scheme').addEventListener('change', () => {
+    state.calcScheme = document.getElementById('calc-scheme').value;
+    document.getElementById('calc-amount').value = '';
+    renderCalc();
+  });
+  ['calc-amount', 'calc-rate', 'calc-tenure', 'calc-mor'].forEach(id =>
+    document.getElementById(id).addEventListener('input', renderCalc));
+  document.getElementById('map-scheme').addEventListener('change', onMapFilter);
+  document.getElementById('map-state').addEventListener('change', onMapFilter);
+
+  renderTracker();
+  go('home');
+});
+
+</script>
